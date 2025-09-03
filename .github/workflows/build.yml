@@ -15,6 +15,13 @@ jobs:
     - name: setup depot-tools
       uses: newkdev/setup-depot-tools@v1.0.1
 
+    - name: Ensure correct ninja binary is used
+      run: |
+        # Remove depot_tools from PATH so ninja resolves to /usr/bin/ninja
+        export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v 'depot_tools' | paste -sd ':' -)
+        which ninja
+        ninja --version
+
     - name: install python requirements
       run: pip install -r requirements.txt
 
